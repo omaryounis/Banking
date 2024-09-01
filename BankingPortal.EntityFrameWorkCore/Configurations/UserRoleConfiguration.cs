@@ -20,6 +20,22 @@ namespace BankingPortal.EntityFrameWorkCore.Configurations
             builder.HasOne(ur => ur.Role)
                    .WithMany(u => u.UserRoles)
                    .HasForeignKey(ur => ur.RoleId);
+            builder.HasData(
+                  [
+                      new UserRole
+                      {
+                          Id = 1,
+                          UserId = 1,
+                          RoleId = 1,
+
+                      },
+                      new UserRole
+                      {
+                          Id = 2,
+                          UserId = 2,
+                          RoleId= 2,
+                      }
+                    ]);
 
         }
     }

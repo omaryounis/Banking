@@ -2,7 +2,7 @@
 
 namespace BankingPortal.Domain.Entities
 {
-    public class UserRole:IdentityBase
+    public class UserRole:BaseEntity
     {
         public int UserId { get; set; }
         public virtual User User { get; set; }

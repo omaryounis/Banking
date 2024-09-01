@@ -1,7 +1,7 @@
 ﻿using BankingPortal.Domain.Interfaces;
 using BankingPortal.EntityFrameWorkCore;
 
-namespace BankingPortal.Infrastructure.Extensions.Repositories
+namespace BankingPortal.EntityFrameWorkCore.Repositories
 {
 
     public class UnitOfWork : IUnitOfWork

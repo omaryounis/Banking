@@ -36,8 +36,9 @@ namespace BankPortal.Application.Features.Commands.Accounts.Token
             var roles = (await _unitOfWork.Repository<Role>().GetAllAsync())
                 .Where(x => roleIds.Contains(x.Id))
                 .ToList();
-            var (newAccessToken, newRefreshToken) = _jwtTokenHelper.GenerateTokens(user.Id.ToString(), user.UserName, user.Email, roles.Select(x => x.Name));
+            var (newAccessToken, newRefreshToken) = _jwtTokenHelper.GenerateTokens(user.Id.ToString(), user.UserName, roles.Select(x => x.Name));
             refreshToken.Token = newRefreshToken;
+
             refreshToken.Expiration = DateTime.UtcNow.AddDays(Convert.ToInt32(_configuration["JwtSettings:RefreshTokenExpirationDays"]));
             await _unitOfWork.Repository<RefreshToken>().UpdateAsync(refreshToken);
             var responseModel = new AuthTokensDto

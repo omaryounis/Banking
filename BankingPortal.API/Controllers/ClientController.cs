@@ -1,5 +1,7 @@
 ﻿using BankingPortal.Application.Features.Commands.Clients;
+using BankingPortal.Application.Features.Queries.Clients;
 using BankingPortal.Application.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingPortal.API.Controllers
@@ -13,41 +15,23 @@ namespace BankingPortal.API.Controllers
         {
             _mediator = mediator;
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateClient([FromForm] ClientDto clientDto, IFormFile profilePhoto)
+
+        // GET: api/client
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> GetClients([FromQuery] GetClientsQuery request)
         {
-            //TO DO move it to service to prepare the received photo
-            byte[] photoData = null;
+            var result = await _mediator.Send(request);
+            return Ok(result);
+        }
 
-            if (profilePhoto != null && profilePhoto.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await profilePhoto.CopyToAsync(memoryStream);
-                    photoData = memoryStream.ToArray();
-                }
-            }
-            var command = new CreateClientCommand
-            {
-                FirstName = clientDto.FirstName,
-                LastName = clientDto.LastName,
-                Email = clientDto.Email,
-                PersonalId = clientDto.PersonalId,
-                MobileNumber = clientDto.MobileNumber,
-                Sex = clientDto.Sex,
-                Address = new AddressDto
-                {
-                    Country = clientDto.Address.Country,
-                    City = clientDto.Address.City,
-                    Street = clientDto.Address.Street,
-                    ZipCode = clientDto.Address.ZipCode
-                },
-                Accounts = clientDto.Accounts,
-                ProfilePhoto = photoData // Pass the photo as byte array
-            };
 
-            var clientId = await _mediator.Send(command);
-            return Ok(clientId);
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> CreateClient([FromForm] CreateClientCommand command)
+        {
+            var client = await _mediator.Send(command);
+            return Ok(client);
         }
 
     }

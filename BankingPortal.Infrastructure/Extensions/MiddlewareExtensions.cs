@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using BankingPortal.Infrastructure.Extensions.Middlewares.ExceptionHandling;
-using BankingPortal.Infrastructure.Extensions.Middlewares.ExecutionContext;
 using BankingPortal.Infrastructure.Extensions.Middlewares.Logging;
 
 namespace BankingPortal.Infrastructure.Extensions
@@ -34,11 +33,6 @@ namespace BankingPortal.Infrastructure.Extensions
         {
             app.UseMiddleware<RequestLoggingMiddleware>(); 
 
-            return app;
-        }
-        public static IApplicationBuilder UseRequestExecutionContext(this IApplicationBuilder app)
-        {
-            app.UseMiddleware<ExecutionRequestContextMiddleware>();
             return app;
         }
         public static IApplicationBuilder UseGlobalExceptionHandling(this IApplicationBuilder app)

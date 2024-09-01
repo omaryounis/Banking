@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankingPortal.Domain.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,29 +10,18 @@ namespace BankingPortal.Application.Models
 {
     public class ClientDto
     {
-        [Required, EmailAddress]
         public string Email { get; set; }
-
-        [Required, MaxLength(60)]
         public string FirstName { get; set; }
-
-        [Required, MaxLength(60)]
         public string LastName { get; set; }
 
-        [Required, StringLength(11, MinimumLength = 11)]
         public string PersonalId { get; set; }
-
-        [Required]
         public string MobileNumber { get; set; }  // Use a library for validating format
 
-        public string ProfilePhoto { get; set; }
+        public byte[] ProfilePhoto { get; set; }
+        public SextType Sex { get; set; } // Male, Female
 
-        [Required]
-        public string Sex { get; set; } // Male, Female
+        //public AddressDto Address { get; set; }
 
-        [Required]
-        public AddressDto Address { get; set; }
-
-        public List<AccountDto> Accounts { get; set; }
+        //public List<AccountDto> Accounts { get; set; }
     }
 }

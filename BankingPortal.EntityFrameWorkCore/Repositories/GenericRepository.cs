@@ -1,10 +1,11 @@
 ﻿
-using BankingPortal.EntityFrameWorkCore;
-using BankingPortal.Infrastructure.Interfaces;
+using BankingPortal.Domain.Entities;
+using BankingPortal.Domain.Interfaces;
+using BankingPortal.EntityFrameWorkCore; 
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace BankingPortal.Infrastructure.Extensions.Repositories
+namespace BankingPortal.EntityFrameWorkCore.Repositories
 {
 
     public class GenericRepository<T> : IGenericRepository<T> where T : class
@@ -110,11 +111,15 @@ namespace BankingPortal.Infrastructure.Extensions.Repositories
 
         }
         // Pagination, sorting, and filtering method
+        public Task GetPagedAsync(int pageIndex, int pageSize, Expression<Func<T, bool>>? filter, Func<IQueryable<Client>, IOrderedQueryable<T>>? orderBy, Func<object, object> includes, Func<object, object> value)
+        {
+            throw new NotImplementedException();
+        }
         public async Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(
                 int pageIndex,
                 int pageSize,
-                Expression<Func<T, bool>> filter = null,
-                Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+                Expression<Func<T, bool>>? filter = null,
+                Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
                 params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _context.Set<T>();
@@ -152,5 +157,7 @@ namespace BankingPortal.Infrastructure.Extensions.Repositories
 
             return await Task.FromResult(query);
         }
+
+       
     }
 }

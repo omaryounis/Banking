@@ -24,33 +24,25 @@ namespace BankingPortal.Application.Features.Commands.Accounts.Register
 
         public async Task<ResponseModel<UserRegisterResponseDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
+            var trackingCorrelationId= Guid.NewGuid();
             // Hash the password
             var (passwordHash, passwordSalt) = PasswordSecurity.CreatePasswordHash(request.Password);
-            var user = new User
+            // Business logic to create a user is in the User domain entity
+            var user = User.Create(request.UserName, passwordHash, passwordSalt, trackingCorrelationId);
+
+            // Assign roles to the user inside the aggregate
+            foreach (var roleId in request.RoleIds)
             {
-                 Code =request.Code,
-                 Email = request.Email,
-                 LastName = request.LastName,
-                 LastNameAr = request.LastNameAr,
-                 Name = request.Name,
-                 NameAr = request.NameAr,
-                 Password = passwordHash,
-                 PasswordSalt = passwordSalt,
-                 UserType = request.UserType,
-                 UserName = request.UserName,
-            };
-            await _unitOfWork.Repository<User>().AddAsync(user);
-            foreach(var role in request.RoleIds)
-            {
-                var userRole = new UserRole() { RoleId = role, UserId = user.Id  };
-                user.UserRoles.Add(userRole);
+                user.AssignRole(roleId);
             }
-            await _unitOfWork.CompleteAsync();
+            // Save the user through the repository
+            await _unitOfWork.Repository<User>().AddAsync(user);
             await _unitOfWork.CompleteAsync();
             return new ResponseModel<UserRegisterResponseDto>
             {
                 IsSuccess = true,
                 Status = "Success",
+                TrackingCorrelationId = trackingCorrelationId,
                 Data = new UserRegisterResponseDto()
                 { 
                     UserName=user.UserName

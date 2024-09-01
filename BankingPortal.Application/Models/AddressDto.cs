@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankingPortal.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace BankingPortal.Application.Models
 {
     public class AddressDto
     {
-        public string Country { get; set; }
+        public string CountryCode { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
         public string ZipCode { get; set; }

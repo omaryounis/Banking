@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using BankingPortal.Infrastructure.Extensions.Middlewares.ExecutionContext;
 using System.Net;
 using BankingPortal.Shared.Models;
 
@@ -9,14 +8,12 @@ namespace BankingPortal.Infrastructure.Extensions.Middlewares.ExceptionHandling
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IExecutionRequestContext _executionRequestContext;
         private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger, IExecutionRequestContext executionRequestContext)
+        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
         {
             _next = next;
             _logger = logger;
-            _executionRequestContext = executionRequestContext;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -51,7 +48,6 @@ namespace BankingPortal.Infrastructure.Extensions.Middlewares.ExceptionHandling
                 Status = "An error occurred , please contact with administrator",
                 Data = null,
                 Errors = new List<string> { exception.Message },
-                TrackingCorrelationId = _executionRequestContext.TrackingCorrelationId,
                 Timestamp = DateTime.UtcNow
             };
             return context.Response.WriteAsJsonAsync(response);

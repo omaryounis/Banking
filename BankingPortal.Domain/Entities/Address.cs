@@ -10,17 +10,9 @@ namespace BankingPortal.Domain.Entities
     public class Address
     {
         public int Id { get; set; }
-
-        [Required, MaxLength(100)]
-        public string Country { get; set; }
-
-        [Required, MaxLength(100)]
+        public string CountryCode { get; set; }
         public string City { get; set; }
-
-        [MaxLength(150)]
         public string Street { get; set; }
-
-        [MaxLength(20)]
         public string ZipCode { get; set; }
 
         // Foreign key to Client entity

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
@@ -25,10 +26,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BankingPortal.EntityFrameWorkCore\BankingPortal.EntityFrameWorkCore.csproj" />
     <ProjectReference Include="..\BankingPortal.Shared\BankingPortal.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Secuirty\" />
   </ItemGroup>
 
 </Project>

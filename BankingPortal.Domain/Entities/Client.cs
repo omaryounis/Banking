@@ -1,4 +1,5 @@
 ﻿using BankingPortal.Domain.Entities.Base;
+using BankingPortal.Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,23 +14,16 @@ namespace BankingPortal.Domain.Entities
     public class Client: IdentityBase
     {
 
-        [Required, MaxLength(60)]
         public string FirstName { get; set; }
 
-        [Required, MaxLength(60)]
         public string LastName { get; set; }
 
-        [Required, EmailAddress]
         public string Email { get; set; }
 
-        [Required, StringLength(11, MinimumLength = 11)]
         public string PersonalId { get; set; }
 
-        [Required]
-        public string MobileNumber { get; set; } // Format validation to be handled elsewhere
-
-        [Required]
-        public string Sex { get; set; } // Male or Female
+        public string MobileNumber { get; set; } 
+        public SextType Sex { get; set; } // Male or Female
 
         public byte[] ProfilePhoto { get; set; } // Path to the profile photo
 
@@ -39,9 +33,12 @@ namespace BankingPortal.Domain.Entities
         // Navigation property for accounts - 1 client can have many accounts
         public ICollection<Account> Accounts { get; set; } = new List<Account>();
 
-        // Additional metadata like created and modified dates (if needed)
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public void SetProp(int userId,DateTime createdDate)
+        {
+            CreatedBy=userId;
+            CreatedDate=createdDate;
+        }
+
     }
 
 }

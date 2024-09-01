@@ -19,7 +19,7 @@ namespace BankingPortal.Infrastructure.Extensions.Helpers
             _configuration = configuration;
         }
           
-        public (string AccessToken, string RefreshToken) GenerateTokens(string userId, string username, string email, IEnumerable<string> roles)
+        public (string AccessToken, string RefreshToken) GenerateTokens(string userId, string username,  IEnumerable<string> roles)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
             var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
@@ -32,7 +32,6 @@ namespace BankingPortal.Infrastructure.Extensions.Helpers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId),
                 new Claim(JwtRegisteredClaimNames.UniqueName, username),
-                new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

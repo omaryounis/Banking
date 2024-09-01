@@ -1,17 +1,16 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using BankingPortal.Infrastructure.Extensions.Repositories;
 using Serilog;
 using System;
-using BankingPortal.Infrastructure.Extensions.Middlewares.ExecutionContext;
 using Serilog.Events;
 using BankingPortal.Infrastructure.Extensions.Helpers;
 using BankingPortal.EntityFrameWorkCore;
 using Microsoft.EntityFrameworkCore;
 using BankingPortal.Domain.Interfaces;
+using BankingPortal.EntityFrameWorkCore.Repositories;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 namespace BankingPortal.Infrastructure.Extensions
 {
 
@@ -22,11 +21,12 @@ namespace BankingPortal.Infrastructure.Extensions
         {
             services.AddSwagger(configuration);
             services.AddRepositories();
-            services.AddServices();
             //services.AddMediatRServices();
             services.AddDbContextServices(configuration);
             services.AddSerilog(configuration);
             services.AddSingleton<JwtTokenHelper>();
+            services.AddHttpContextAccessor();
+
             return services;
         }
 
@@ -67,14 +67,6 @@ namespace BankingPortal.Infrastructure.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
-
-        private static IServiceCollection AddServices(this IServiceCollection services)
-        {
-            services.AddSingleton<IExecutionRequestContext, ExecutionRequestContext>();
-            return services;
-        }
-
-       
 
         private static IServiceCollection AddDbContextServices(this IServiceCollection services, IConfiguration configuration)
         {
